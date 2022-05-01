@@ -1,3 +1,5 @@
+"""Password Validators collection"""
+
 from abc import ABC, abstractmethod
 from passwordchecker.validation_errors import (
     HasBeenPwnd,
@@ -12,7 +14,7 @@ from passwordchecker.pwnd_hashes import SimilarPwndHashedPasswords
 
 
 class Validator(ABC):
-    """blueprint for validator classes"""
+    """interface blueprint for validator classes"""
 
     @abstractmethod
     def __init__(self, text: str) -> None:
@@ -30,7 +32,7 @@ class LengthValidator(Validator):
     def __init__(self, text: str) -> None:
         self.text = text
 
-    def is_valid(self, length=8):
+    def is_valid(self, length=8) -> None:
         """raise TooShort exception is text is shorter than specified length (default 8)"""
         if len(self.text) < length:
             raise TooShort
@@ -42,7 +44,7 @@ class HasNumberValidator(Validator):
     def __init__(self, text: str) -> None:
         self.text = text
 
-    def is_valid(self):
+    def is_valid(self) -> None:
         """raise NoNumbers exception if not valid"""
         if not any(character in "1234567890" for character in self.text):
             raise NoNumbers
@@ -54,7 +56,7 @@ class HasSpecialCharactersValidator(Validator):
     def __init__(self, text: str) -> None:
         self.text = text
 
-    def is_valid(self):
+    def is_valid(self) -> None:
         """raise NoSpecialCharacters if no special characters"""
         if self.text.isalnum():
             raise NoSpecialCharacters
@@ -66,7 +68,7 @@ class HasLowerAndUppercaseValidator(Validator):
     def __init__(self, text: str) -> None:
         self.text = text
 
-    def is_valid(self):
+    def is_valid(self) -> None:
         """raise OnlyUppercase if only uppercase, raise OnlyLowercase if only lowecase"""
         if self.text.upper() == self.text:
             raise OnlyUppercase
@@ -80,7 +82,7 @@ class NotPwndValidator(Validator):
     def __init__(self, text: str) -> None:
         self.text = text
 
-    def is_valid(self):
+    def is_valid(self) -> None:
         """raise HasBeenPwnd if identical hash found on haveibeenpwned.com. Makes sure uppercase are used for comparisons."""
         to_validate = HashedText(self.text)
         pwnd = SimilarPwndHashedPasswords(to_validate.get_five_digits().upper())
@@ -102,11 +104,8 @@ class PasswordValidator(Validator):
             NotPwndValidator,
         )
 
-    def is_valid(self):
-        """go through all known_validators and raise BadPassword on exception"""
-        try:
-            for class_name in self.known_validators:
-                validate = class_name(self.password)
-                validate.is_valid()
-        except Exception:
-            raise
+    def is_valid(self) -> None:
+        """go through all self.known_validators"""
+        for class_name in self.known_validators:
+            validate = class_name(self.password)
+            validate.is_valid()

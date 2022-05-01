@@ -1,3 +1,6 @@
+"""Exceptions that validators can rise"""
+
+
 class TooShort(Exception):
     pass
 

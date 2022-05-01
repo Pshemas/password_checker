@@ -1,3 +1,5 @@
+"""tools for handling pwndpassords.com"""
+
 from requests import get
 
 
