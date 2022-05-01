@@ -1,25 +1,29 @@
 """Exceptions that validators can rise"""
 
 
-class TooShort(Exception):
-    pass
+class ValidationException(Exception):
+    """general validation exception"""
 
 
-class OnlyLowercase(Exception):
-    pass
+class TooShort(ValidationException):
+    """rised when text too short"""
 
 
-class OnlyUppercase(Exception):
-    pass
+class OnlyLowercase(ValidationException):
+    """rised when text has only lowecase characters"""
 
 
-class NoNumbers(Exception):
-    pass
+class OnlyUppercase(ValidationException):
+    """rised when text has only uppercase characters"""
 
 
-class NoSpecialCharacters(Exception):
-    pass
+class NoNumbers(ValidationException):
+    """rised when text contains no numbers"""
 
 
-class HasBeenPwnd(Exception):
-    pass
+class NoSpecialCharacters(ValidationException):
+    """rised when text contains no special characters"""
+
+
+class HasBeenPwnd(ValidationException):
+    """rised when identical hash for the text has been found"""
