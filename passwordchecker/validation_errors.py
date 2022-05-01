@@ -20,7 +20,3 @@ class NoSpecialCharacters(Exception):
 
 class HasBeenPwnd(Exception):
     pass
-
-
-class BadPassword(Exception):
-    pass

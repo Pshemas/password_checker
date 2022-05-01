@@ -6,7 +6,6 @@ from passwordchecker.validation_errors import (
     NoSpecialCharacters,
     OnlyUppercase,
     OnlyLowercase,
-    BadPassword,
 )
 from passwordchecker.hashed_text import HashedText
 from passwordchecker.pwnd_hashes import SimilarPwndHashedPasswords
@@ -110,4 +109,4 @@ class PasswordValidator(Validator):
                 validate = class_name(self.password)
                 validate.is_valid()
         except Exception:
-            raise BadPassword
+            raise
