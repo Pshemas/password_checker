@@ -17,4 +17,5 @@ class HashedText:
             raise UnknownHashingAlgorithm
 
     def get_five_digits(self):
+        """get first five digits of hashed text"""
         return self.hashed[:5]

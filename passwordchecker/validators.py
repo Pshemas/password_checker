@@ -13,12 +13,15 @@ from passwordchecker.pwnd_hashes import SimilarPwndHashedPasswords
 
 
 class Validator(ABC):
+    """blueprint for validator classes"""
+
     @abstractmethod
     def __init__(self, text: str) -> None:
         pass
 
     @abstractmethod
     def is_valid(self):
+        """should raise exception if not valid"""
         pass
 
 
@@ -41,6 +44,7 @@ class HasNumberValidator(Validator):
         self.text = text
 
     def is_valid(self):
+        """raise NoNumbers exception if not valid"""
         if not any(character in "1234567890" for character in self.text):
             raise NoNumbers
 
@@ -52,6 +56,7 @@ class HasSpecialCharactersValidator(Validator):
         self.text = text
 
     def is_valid(self):
+        """raise NoSpecialCharacters if no special characters"""
         if self.text.isalnum():
             raise NoSpecialCharacters
 
@@ -63,6 +68,7 @@ class HasLowerAndUppercaseValidator(Validator):
         self.text = text
 
     def is_valid(self):
+        """raise OnlyUppercase if only uppercase, raise OnlyLowercase if only lowecase"""
         if self.text.upper() == self.text:
             raise OnlyUppercase
         elif self.text.lower() == self.text:
@@ -76,8 +82,9 @@ class NotPwndValidator(Validator):
         self.text = text
 
     def is_valid(self):
+        """raise HasBeenPwnd if identical hash found on haveibeenpwned.com. Makes sure uppercase are used for comparisons."""
         to_validate = HashedText(self.text)
-        pwnd = SimilarPwndHashedPasswords(to_validate.get_five_digits())
+        pwnd = SimilarPwndHashedPasswords(to_validate.get_five_digits().upper())
         for item in pwnd.similar:
             if to_validate.hashed.upper()[5:] == item.upper():
                 raise HasBeenPwnd
@@ -97,6 +104,7 @@ class PasswordValidator(Validator):
         )
 
     def is_valid(self):
+        """go through all known_validators and raise BadPassword on exception"""
         try:
             for class_name in self.known_validators:
                 validate = class_name(self.password)
