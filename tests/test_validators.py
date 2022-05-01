@@ -55,7 +55,11 @@ def test_pwnd_false(requests_mock):
 
 
 def test_pwnd_true(requests_mock):
-    mocked_response = "D1217AEEB182C9106254D397BA743802C26D6AFE:2\n0043EC92D698C93FF11FF3B6DF93B17433E:2"
+    # alamakota
+    # full hash: D1217AEEB182C9106254D397BA743802C26D6AFE
+    mocked_response = (
+        "AEEB182C9106254D397BA743802C26D6AFE:2\n0043EC92D698C93FF11FF3B6DF93B17433E:2"
+    )
     requests_mock.get(
         "https://api.pwnedpasswords.com/range/d1217", text=mocked_response
     )

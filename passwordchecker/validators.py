@@ -52,9 +52,7 @@ class HasSpecialCharactersValidator(Validator):
         self.text = text
 
     def is_valid(self):
-        if not any(
-            character in "`~!@#$%^&*()_-+=[]}{|\\;:'\",./<>?" for character in self.text
-        ):
+        if self.text.isalnum():
             raise NoSpecialCharacters
 
 
@@ -81,7 +79,7 @@ class NotPwndValidator(Validator):
         to_validate = HashedText(self.text)
         pwnd = SimilarPwndHashedPasswords(to_validate.get_five_digits())
         for item in pwnd.similar:
-            if to_validate.hashed.upper() == item.upper():
+            if to_validate.hashed.upper()[5:] == item.upper():
                 raise HasBeenPwnd
 
 
