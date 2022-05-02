@@ -15,7 +15,7 @@ def parse_from_file(input_file: str, output_file: str):
         counter = 1
         for line in file:
             try:
-                password = PasswordValidator(line)
+                password = PasswordValidator(line.strip())
                 password.is_valid()
                 output.write(line)
             except ValidationException as error:
@@ -27,7 +27,7 @@ def parse_from_file(input_file: str, output_file: str):
 
 
 def main():
-    """main app call. Uses passwords.txt file as input and bezpieczne.txt as outpu"""
+    """main app call. Uses passwords.txt file as input and bezpieczne.txt as output"""
     parse_from_file("passwords.txt", "bezpieczne.txt")
 
 
